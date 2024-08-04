@@ -1,3 +1,6 @@
+using System.Xml.Linq;
+using url_shortener.api.Models.Dto;
+
 namespace url_shortener.api.Repositories;
 
 public interface IUrlRepository
@@ -7,6 +10,7 @@ public interface IUrlRepository
     // Get {id}
     
     // Save
-    
+    Task SaveAsync(UrlDto url);
+
     // Delete {id}
 }

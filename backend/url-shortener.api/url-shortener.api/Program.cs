@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
+using url_shortener.api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ InitializeMongoClient(builder);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+
+builder.Services.AddTransient<IUrlRepository, UrlRepository>();
 
 var app = builder.Build();
 
