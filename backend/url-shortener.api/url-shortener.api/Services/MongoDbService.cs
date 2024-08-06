@@ -19,4 +19,13 @@ public class MongoDbService
     {
         await _collection.InsertOneAsync(shortLinkDto);
     }
+
+    public async Task<List<ShortLinkDto>> GetAsync()
+    {
+        var filter = Builders<ShortLinkDto>.Filter.Empty;
+        
+        var result = await _collection.Find(filter).ToListAsync();
+    
+        return result;
+    }
 }
