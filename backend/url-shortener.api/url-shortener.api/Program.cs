@@ -1,16 +1,15 @@
-using MongoDB.Driver;
-using MongoDB.Bson;
-using url_shortener.api.Repositories;
+using url_shortener.api.Models.Settings;
+using url_shortener.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-InitializeMongoClient(builder);
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<MongoDbSettings>();
+builder.Services.AddSingleton<MongoDbService>();
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-
-builder.Services.AddTransient<IUrlRepository, UrlRepository>();
 
 var app = builder.Build();
 
@@ -21,29 +20,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
-return;
-
-void InitializeMongoClient(WebApplicationBuilder builder)
-{
-    var mongoDbSection = builder.Configuration.GetSection("MongoDB");
-    var username = mongoDbSection["Username"];
-    var password = mongoDbSection["Password"];
-
-    var connectionUri = $"mongodb+srv://{username}:{password}@cluster68311.m06jkmr.mongodb.net/?retryWrites=true&w=majority&appName={username}";
-    var settings = MongoClientSettings.FromConnectionString(connectionUri);
-
-    settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-    
-    var client = new MongoClient(settings);
-    
-    try {
-        var result = client.GetDatabase("admin").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-        Console.WriteLine("Pinged your deployment. You successfully connected to MongoDB!");
-    } catch (Exception ex) {
-        Console.WriteLine(ex);
-    }
-
-    builder.Services.AddSingleton(client);
-}

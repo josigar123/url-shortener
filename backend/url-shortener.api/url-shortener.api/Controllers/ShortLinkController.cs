@@ -1,18 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using url_shortener.api.Models.Dto;
-using url_shortener.api.Repositories;
+using url_shortener.api.Services;
 
 namespace url_shortener.api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ShortLinkController(IUrlRepository urlRepository) : ControllerBase
+public class ShortLinkController(MongoDbService mongoDbService) : ControllerBase
 {
-    [HttpPost("post-url")]
-    public async Task<IActionResult> Post(UrlDto url)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] string id)
     {
-        await urlRepository.SaveAsync(url);
+        await Task.CompletedTask;
+        return Ok();
+    }
 
-        return Ok(url);
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] ShortLinkDto shortLinkDto)
+    {
+        await mongoDbService.SaveAsync(shortLinkDto);
+        return CreatedAtAction(nameof(Post), new { id = shortLinkDto.Id }, shortLinkDto);
     }
 }
