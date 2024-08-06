@@ -497,3 +497,4 @@ artifacts/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 
+backend/url-shortener.api/url-shortener.api/appsettings.Development.json
