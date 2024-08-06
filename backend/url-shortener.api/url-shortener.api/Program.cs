@@ -4,6 +4,16 @@ using url_shortener.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoDbSettings>();
 builder.Services.AddSingleton<MongoDbService>();
@@ -25,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 
