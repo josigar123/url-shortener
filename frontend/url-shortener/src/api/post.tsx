@@ -1,9 +1,18 @@
 import axios from "axios";
 
-const postData = {
-	url: "mymagicurl.net",
+interface PostData {
+	url: string;
+}
+
+const PostUrl = ({ url }: PostData) => {
+	axios
+		.post("http://localhost:5249/api/ShortLink", { url })
+		.then((response) => {
+			console.log("URL successfully submitted:", response.data);
+		})
+		.catch((error) => {
+			console.error("Error posting URL:", error.response.data);
+		});
 };
 
-axios.post("http://localhost:5249/api/ShortLink", postData).then((response) => {
-	console.log(response.data);
-});
+export default PostUrl;
