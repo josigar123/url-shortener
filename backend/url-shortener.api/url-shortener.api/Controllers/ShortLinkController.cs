@@ -17,9 +17,9 @@ public class ShortLinkController(MongoDbService mongoDbService, IShortLinkGenera
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromQuery] string url)
+    public async Task<IActionResult> Post([FromBody] UrlDto urlDto)
     {
-        var shortLinkDto = new ShortLinkDto(url, shortLinkGenerator.GenerateShortLink());
+        var shortLinkDto = new ShortLinkDto(urlDto, shortLinkGenerator.GenerateShortLink());
         
         await mongoDbService.SaveAsync(shortLinkDto);
         return CreatedAtAction(nameof(Post), new {id = shortLinkDto.Id}, shortLinkDto);

@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace url_shortener.api.Models.Dto;
 
-public class ShortLinkDto(string fullLink, string shortLink)
+public class ShortLinkDto(UrlDto fullLink, string shortLink)
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -16,5 +16,5 @@ public class ShortLinkDto(string fullLink, string shortLink)
 
     [BsonElement("full_link")]
     [JsonPropertyName("full_link")]
-    public string FullLink { get; set; } = fullLink;
+    public UrlDto FullLink { get; set; } = fullLink;
 }
