@@ -4,6 +4,7 @@ using Models.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Models.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 public class MongoDbService
 {
@@ -18,6 +19,14 @@ public class MongoDbService
     public async Task SaveAsync(ShortLinkDto shortLinkDto)
     {
         await _collection.InsertOneAsync(shortLinkDto);
+    }
+
+    public async Task<ShortLinkDto> GetAsync(string id){
+
+        var filter = Builders<ShortLinkDto>.Filter.Eq(s => s.Id, id);
+
+        var result = await _collection.Find(filter).FirstOrDefaultAsync();
+        return result;
     }
 
     public async Task<List<ShortLinkDto>> GetAsync()

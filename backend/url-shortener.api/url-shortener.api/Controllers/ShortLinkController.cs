@@ -16,10 +16,16 @@ public class ShortLinkController(MongoDbService mongoDbService, IShortLinkGenera
         return Ok(result);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get([FromQuery] string id){
+        var result = await mongoDbService.GetAsync(id);
+        return Ok(result);
+    }
+
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] UrlDto urlDto)
+    public async Task<IActionResult> Post([FromBody] string url)
     {
-        var shortLinkDto = new ShortLinkDto(urlDto, shortLinkGenerator.GenerateShortLink());
+        var shortLinkDto = new ShortLinkDto(url, shortLinkGenerator.GenerateShortLink());
         
         await mongoDbService.SaveAsync(shortLinkDto);
         return CreatedAtAction(nameof(Post), new {id = shortLinkDto.Id}, shortLinkDto);
