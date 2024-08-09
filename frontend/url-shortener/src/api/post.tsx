@@ -1,16 +1,14 @@
 import axios from "axios";
 
 const PostUrl = async (url: string) => {
+  const BASE_URL = "http://localhost:5249/api/ShortLink/";
+
   try {
-    const response = await axios.post(
-      "http://localhost:5249/api/ShortLink",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axios.post(BASE_URL, url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     console.log("URL successfully submitted:", response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
