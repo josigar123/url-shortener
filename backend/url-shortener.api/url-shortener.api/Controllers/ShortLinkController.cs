@@ -17,7 +17,7 @@ public class ShortLinkController(MongoDbService mongoDbService, IShortLinkGenera
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get([FromQuery] string id){
+    public async Task<IActionResult> Get([FromRoute] string id){
         var result = await mongoDbService.GetAsync(id);
         return Ok(result);
     }
