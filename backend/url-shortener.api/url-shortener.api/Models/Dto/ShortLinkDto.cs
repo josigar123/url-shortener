@@ -8,7 +8,7 @@ public class ShortLinkDto(string fullLink, string shortLink)
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; } = null!;
+    public string? Id { get; set; }
 
     [BsonElement("short_link")]
     [JsonPropertyName("short_link")]

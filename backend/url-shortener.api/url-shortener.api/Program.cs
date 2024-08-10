@@ -11,6 +11,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
             .AllowAnyMethod();
+
+
     });
 });
 
@@ -34,9 +36,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("AllowSpecificOrigin"); // Ensure this is placed before UseEndpoints
 app.UseAuthorization();
-
-app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 

@@ -29,6 +29,20 @@ public class MongoDbService
         return result;
     }
 
+    public async Task<string?> GetFullLinkAsync(string short_link){
+
+        var filter = Builders<ShortLinkDto>.Filter.Eq(s => s.ShortLink, short_link);
+
+        var result = await _collection.Find(filter).FirstOrDefaultAsync();
+
+        if(result == null){
+            Console.WriteLine("In GetFullLinkAsync: result is null for shortlink " + short_link);
+            return null;
+        }
+
+        return result.FullLink;
+    }
+
     public async Task<List<ShortLinkDto>> GetAsync()
     {
         var filter = Builders<ShortLinkDto>.Filter.Empty;
