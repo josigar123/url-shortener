@@ -1,7 +1,6 @@
 
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using url_shortener.api.Models.Dto;
 using url_shortener.api.Services;
 
 namespace url_shortener.api.Controllers;
