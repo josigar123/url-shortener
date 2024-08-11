@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import PostUrl from "../api/post";
 
-const InputField = () => {
+interface ShortLinkDto {
+  id: string;
+  short_link: string;
+  full_link: string;
+}
+
+const InputField: React.FC = () => {
   const [url, setUrl] = useState<string>("");
+  const [response, setResponse] = useState<ShortLinkDto | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (url.trim() === "") {
       console.error("URL is required");
       return;
     }
-    PostUrl(url);
+
+    const apiResponse = await PostUrl(url);
+
+    if (apiResponse) {
+      setResponse(apiResponse);
+    } else {
+      setResponse(null);
+    }
+
     setUrl("");
   };
 
@@ -29,6 +44,15 @@ const InputField = () => {
         />
         <button type="submit">Submit</button>
       </form>
+
+      {response ? (
+        <>
+          <h2>The short URL: {response.short_link}</h2>
+          <h2>The Original URL: {response.full_link}</h2>
+        </>
+      ) : (
+        <h2>{response === null ? "Invalid post" : "No response yet"}</h2>
+      )}
     </>
   );
 };
