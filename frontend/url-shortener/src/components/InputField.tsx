@@ -47,6 +47,8 @@ const InputField: React.FC = () => {
 
       {response ? (
         <>
+          {console.log("Short link: " + response.short_link)}
+          {console.log("Full link: " + response.full_link)}
           <h2>The short URL: {response.short_link}</h2>
           <h2>The Original URL: {response.full_link}</h2>
         </>
